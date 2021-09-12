@@ -43,6 +43,15 @@ class User extends Authenticatable
         'updated_at',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole($roles)
+    {
+        return in_array($this->role->code, $roles);
+    }
 
    public function generateToken()
     {

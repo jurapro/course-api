@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\LoginRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         return [
             'data' => [
@@ -28,11 +28,6 @@ class UserController extends Controller
     }
 
     public function index()
-    {
-
-    }
-
-    public function show()
     {
 
     }

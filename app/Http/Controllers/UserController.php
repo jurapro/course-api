@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\LoginRequest;
+use App\Http\Resources\UserListResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,7 @@ class UserController extends Controller
 
     public function index()
     {
-
+        return UserListResource::collection(User::all());
     }
 
     public function store()

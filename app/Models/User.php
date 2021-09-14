@@ -17,8 +17,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['group'];
-
     protected $fillable = [
         'name',
         'surname',
@@ -38,6 +36,9 @@ class User extends Authenticatable
         'role',
         'role_id',
         'password',
+        'patronymic',
+        'surname',
+        'photo_file',
         'api_token',
         'created_at',
         'updated_at',

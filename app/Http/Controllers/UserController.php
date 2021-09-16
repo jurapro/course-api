@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\AddRequest;
 use App\Http\Requests\User\LoginRequest;
-use App\Http\Resources\UserListResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,12 +31,22 @@ class UserController extends Controller
 
     public function index()
     {
-        return UserListResource::collection(User::all());
+        return UserResource::collection(User::all());
     }
 
-    public function store()
+    public function store(AddRequest $userRequest)
     {
+        $user = User::create([
+                'photo_file' => $userRequest->photo_file ? $userRequest->photo_file->store('public') : null,
+            ] + $userRequest->all()
+        );
 
+        return response()->json([
+            'data' => [
+                'id' => $user->id,
+                'status' => 'created'
+            ]
+        ])->setStatusCode(201, 'Created');
     }
 
 }

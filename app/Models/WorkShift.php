@@ -20,4 +20,17 @@ class WorkShift extends Model
         'updated_at',
     ];
 
+    public function open()
+    {
+        $this->active = true;
+        $this->save();
+        return $this;
+    }
+
+    public function close()
+    {
+        $this->active = false;
+        $this->save();
+        return $this;
+    }
 }

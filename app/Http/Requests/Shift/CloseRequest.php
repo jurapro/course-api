@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Http\Requests\Shift;
+
+use App\Exceptions\ApiException;
+use App\Http\Requests\APIRequest;
+
+
+class CloseRequest extends ApiRequest
+{
+    public function authorize()
+    {
+        $workShift = $this->route('workShift');
+
+        if ($workShift->active) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new ApiException(403, 'Forbidden. The shift is already closed!');
+    }
+}

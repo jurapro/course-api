@@ -21,4 +21,8 @@ class OrderMenu extends Model
         'updated_at',
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Menu::class,'menu_id');
+    }
 }

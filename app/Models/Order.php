@@ -16,4 +16,31 @@ class Order extends Model
         'shift_worker_id'
     ];
 
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(StatusOrder::class, 'status_order_id');
+    }
+
+    public function worker()
+    {
+        return $this->belongsTo(ShiftWorker::class, 'shift_worker_id');
+    }
+
+    public function positions()
+    {
+        return $this->hasMany(OrderMenu::class);
+    }
+
+    public function getPrice()
+    {
+        return $this->positions->reduce(function ($price, $item) {
+            return $price + $item->count * $item->product->price;
+        });
+    }
+
 }

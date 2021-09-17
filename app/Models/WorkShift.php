@@ -20,6 +20,16 @@ class WorkShift extends Model
         'updated_at',
     ];
 
+    public function workers()
+    {
+        return $this->belongsToMany(User::class, 'shift_workers');
+    }
+
+    public function orders()
+    {
+        return $this->hasManyThrough(Order::class, ShiftWorker::class);
+    }
+
     public function open()
     {
         $this->active = true;
@@ -32,5 +42,17 @@ class WorkShift extends Model
         $this->active = false;
         $this->save();
         return $this;
+    }
+
+    public function hasUser($id_user)
+    {
+        return $this->workers()->where(['user_id' => $id_user])->exists();
+    }
+
+    public function amountForAllOrders()
+    {
+        return $this->orders->reduce(function ($sum, $item) {
+            return $sum + $item->getPrice();
+        });
     }
 }

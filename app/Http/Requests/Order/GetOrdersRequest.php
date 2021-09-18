@@ -11,7 +11,7 @@ class GetOrdersRequest extends ApiRequest
     public function authorize()
     {
         $workShift = $this->route('workShift');
-        return $this->user()->hasRole(['admin']) || $workShift->hasUser($this->user()->id);
+        return $this->user()->hasRole(['admin']) || $workShift->hasUser($this->user());
     }
     public function rules()
     {

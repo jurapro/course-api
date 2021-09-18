@@ -19,6 +19,12 @@ class CloseRequest extends ApiRequest
         return false;
     }
 
+    public function rules()
+    {
+        return [
+        ];
+    }
+
     protected function failedAuthorization()
     {
         throw new ApiException(403, 'Forbidden. The shift is already closed!');

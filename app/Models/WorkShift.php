@@ -25,6 +25,11 @@ class WorkShift extends Model
         return $this->belongsToMany(User::class, 'shift_workers');
     }
 
+    public function hasUser(User $user)
+    {
+        return $this->workers()->where(['user_id' => $user->id])->exists();
+    }
+
     public function orders()
     {
         return $this->hasManyThrough(Order::class, ShiftWorker::class);
@@ -32,21 +37,14 @@ class WorkShift extends Model
 
     public function open()
     {
-        $this->active = true;
-        $this->save();
+        $this->update(['active'=>true]);
         return $this;
     }
 
     public function close()
     {
-        $this->active = false;
-        $this->save();
+        $this->update(['active'=>false]);
         return $this;
-    }
-
-    public function hasUser($id_user)
-    {
-        return $this->workers()->where(['user_id' => $id_user])->exists();
     }
 
     public function amountForAllOrders()

@@ -40,7 +40,7 @@ Route::middleware('role:waiter|cook')
 //ОФИЦИАНТ
 //Просмотр конкретного заказа. Создание заказа для определенного столика
 Route::middleware('role:waiter')
-    ->apiResource('order', Controllers\UserController::class, ['only' => ['show', 'store']]);
+    ->apiResource('order', Controllers\OrderController::class, ['only' => ['show', 'store']]);
 
 Route::middleware('role:waiter')
     ->prefix('order')->group(function () {

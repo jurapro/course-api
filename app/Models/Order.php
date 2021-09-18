@@ -26,9 +26,13 @@ class Order extends Model
         return $this->belongsTo(StatusOrder::class, 'status_order_id');
     }
 
-    public function worker()
+    public function user()
     {
-        return $this->belongsTo(ShiftWorker::class, 'shift_worker_id');
+        return $this->hasOneThrough(User::class, ShiftWorker::class,
+            'id',
+            'id',
+            'shift_worker_id',
+            'user_id');
     }
 
     public function positions()
@@ -39,8 +43,8 @@ class Order extends Model
     public function getPrice()
     {
         return $this->positions->reduce(function ($price, $item) {
-            return $price + $item->count * $item->product->price;
-        });
+                return $price + $item->count * $item->product->price;
+            }) ?? 0;
     }
 
 }

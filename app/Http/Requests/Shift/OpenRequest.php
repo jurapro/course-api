@@ -17,6 +17,12 @@ class OpenRequest extends ApiRequest
         return true;
     }
 
+    public function rules()
+    {
+        return [
+        ];
+    }
+
     protected function failedAuthorization()
     {
         throw new ApiException(403, 'Forbidden. There are open shifts!');

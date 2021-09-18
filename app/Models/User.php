@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'photo_file',
         'role_id',
+        'api_token'
     ];
 
     /**
@@ -51,21 +52,32 @@ class User extends Authenticatable
 
     public function hasRole($roles)
     {
-        return in_array($this->role->code, $roles);
+        return collect($roles)->contains($this->role->code);
     }
 
-   public function generateToken()
+    public function shiftWorkers()
     {
-        $this->api_token = Hash::make(Str::random());
-        $this->save();
+        return $this->hasMany(ShiftWorker::class);
+    }
 
+    public function getShiftWorker($work_shift_id)
+    {
+        return $this->shiftWorkers()->where(['work_shift_id' => $work_shift_id])->first();
+    }
+
+    public function generateToken()
+    {
+        $this->update([
+            'api_token' => Hash::make(Str::random())
+        ]);
         return $this->api_token;
     }
 
     public function logout()
     {
-        $this->api_token = null;
-        $this->save();
+        $this->update([
+            'api_token' => null
+        ]);
     }
 
 }

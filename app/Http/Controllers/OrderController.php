@@ -12,6 +12,7 @@ use App\Http\Resources\OrdersDetailResource;
 use App\Models\Order;
 use App\Models\OrderMenu;
 use App\Models\StatusOrder;
+use App\Models\WorkShift;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -49,6 +50,14 @@ class OrderController extends Controller
 
     public function takenOrders()
     {
+        $orders = WorkShift::where(['active' => true])
+            ->first()
+            ->orders
+            ->filter(function ($order) {
+                return collect(['preparing', 'taken'])->contains($order->status->code);
+            });
+
+        return OrderResource::collection($orders);
     }
 
     public function addPosition(Order $order, AddPositionRequest $request)
@@ -62,7 +71,7 @@ class OrderController extends Controller
         return new OrdersDetailResource($order);
     }
 
-    public function removePosition(Order $order, OrderMenu $orderMenu,
+    public function removePosition(Order                 $order, OrderMenu $orderMenu,
                                    RemovePositionRequest $request)
     {
         $orderMenu->delete();

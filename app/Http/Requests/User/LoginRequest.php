@@ -9,9 +9,14 @@ class LoginRequest extends APIRequest
 {
     public function authorize()
     {
-        return User::where('login', $this->login)
-            ->where('password', $this->password)
-            ->where('status', 'working')->first();
+        if ($this->login && $this->password) {
+            return User::where([
+                'login'=> $this->login,
+                'password'=>$this->password,
+                'status'=> 'working'
+                ])->first();
+        }
+        return true;
     }
 
     public function rules()

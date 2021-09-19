@@ -71,8 +71,7 @@ class OrderController extends Controller
         return new OrdersDetailResource($order);
     }
 
-    public function removePosition(Order                 $order, OrderMenu $orderMenu,
-                                   RemovePositionRequest $request)
+    public function removePosition(Order $order, OrderMenu $orderMenu, RemovePositionRequest $request)
     {
         $orderMenu->delete();
         return new OrdersDetailResource($order);

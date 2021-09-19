@@ -12,13 +12,11 @@ class ShiftWorkerRequest extends ApiRequest
 
     public function authorize()
     {
-        $workShift = $this->route('workShift');
-
-        if ($workShift->hasUser($this->user_id)) {
-            return false;
+        $user = User::find($this->user_id);
+        if (!$user) {
+            return true;
         }
-
-        return true;
+        return !$this->route('workShift')->hasUser($user);
     }
 
     public function rules()

@@ -10,11 +10,7 @@ class OpenRequest extends ApiRequest
 {
     public function authorize()
     {
-        if (WorkShift::where(['active' => true])->count()) {
-            return false;
-        }
-
-        return true;
+        return !WorkShift::where(['active' => true])->first();
     }
 
     public function rules()

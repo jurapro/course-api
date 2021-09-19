@@ -19,32 +19,32 @@ class WorkShiftController extends Controller
         return WorkShift::create($request->all());
     }
 
-    public function open(WorkShift $workShift, OpenRequest $openRequest)
+    public function open(WorkShift $workShift, OpenRequest $request)
     {
         return new WorkShiftResource($workShift->open());
     }
 
-    public function close(WorkShift $workShift, CloseRequest $closeRequest)
+    public function close(WorkShift $workShift, CloseRequest $request)
     {
         return new WorkShiftResource($workShift->close());
     }
 
-    public function addUser(WorkShift $workShift, ShiftWorkerRequest $shiftWorkerRequest)
+    public function addUser(WorkShift $workShift, ShiftWorkerRequest $request)
     {
         ShiftWorker::create([
             'work_shift_id' => $workShift->id,
-            'user_id' => $shiftWorkerRequest->user_id
+            'user_id' => $request->user_id
         ]);
 
         return response()->json([
             'data' => [
-                'id_user' => $shiftWorkerRequest->user_id,
+                'id_user' => $request->user_id,
                 'status' => 'added'
             ]
         ])->setStatusCode(201, 'Created');
     }
 
-    public function orders(WorkShift $workShift, GetOrdersRequest $getOrdersRequest)
+    public function orders(WorkShift $workShift, GetOrdersRequest $request)
     {
         return new WorkShiftOrdersResource($workShift);
     }

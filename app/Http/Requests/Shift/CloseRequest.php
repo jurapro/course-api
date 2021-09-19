@@ -11,12 +11,7 @@ class CloseRequest extends ApiRequest
     public function authorize()
     {
         $workShift = $this->route('workShift');
-
-        if ($workShift->active) {
-            return true;
-        }
-
-        return false;
+        return $workShift->active;
     }
 
     public function rules()

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Order\AddPositionRequest;
 use App\Http\Requests\Order\AddRequest;
+use App\Http\Requests\Order\RemovePositionRequest;
 use App\Http\Requests\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrdersDetailResource;
 use App\Models\Order;
-use App\Models\ShiftWorker;
+use App\Models\OrderMenu;
 use App\Models\StatusOrder;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,11 +42,21 @@ class OrderController extends Controller
     {
     }
 
-    public function addPosition()
+    public function addPosition(Order $order, AddPositionRequest $request)
     {
+        OrderMenu::create([
+            'order_id' => $order->id,
+            'menu_id' => $request->menu_id,
+            'count' => $request->count,
+        ]);
+
+        return new OrdersDetailResource($order);
     }
 
-    public function removePosition()
+    public function removePosition(Order $order, OrderMenu $orderMenu,
+                                   RemovePositionRequest $request)
     {
+        $orderMenu->delete();
+        return new OrdersDetailResource($order);
     }
 }

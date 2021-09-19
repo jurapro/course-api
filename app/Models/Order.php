@@ -26,6 +26,15 @@ class Order extends Model
         return $this->belongsTo(StatusOrder::class, 'status_order_id');
     }
 
+    public function workShift()
+    {
+        return $this->hasOneThrough(WorkShift::class, ShiftWorker::class,
+            'id',
+            'id',
+            'shift_worker_id',
+            'work_shift_id');
+    }
+
     public function user()
     {
         return $this->hasOneThrough(User::class, ShiftWorker::class,

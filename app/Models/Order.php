@@ -56,4 +56,29 @@ class Order extends Model
             }) ?? 0;
     }
 
+    public function getAllowedsTransitions(User $user)
+    {
+        if ($user->hasRole(['waiter'])) {
+            $alloweds = [
+                'taken' => ['canceled'],
+                'ready' => ['paid-up']
+            ];
+        }
+
+        if ($user->hasRole(['cook'])) {
+            $alloweds = [
+                'taken' => ['preparing'],
+                'preparing' => ['ready']
+            ];
+        }
+
+        return collect($alloweds[$this->status->code] ?? []);
+    }
+
+    public function changeStatus($status)
+    {
+        $this->update([
+            'status_order_id' => StatusOrder::where(['code' => $status])->first()->id
+        ]);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\AddPositionRequest;
 use App\Http\Requests\Order\AddRequest;
+use App\Http\Requests\Order\ChangeStatusRequest;
 use App\Http\Requests\Order\RemovePositionRequest;
 use App\Http\Requests\Order\ShowRequest;
 use App\Http\Resources\OrderResource;
@@ -34,8 +35,16 @@ class OrderController extends Controller
     }
 
 
-    public function changeStatus()
+    public function changeStatus(Order $order, ChangeStatusRequest $request)
     {
+        $order->changeStatus($request->status);
+
+        return [
+            'data' => [
+                'id' => $order->id,
+                'status' => $request->status
+            ]
+        ];
     }
 
     public function takenOrders()

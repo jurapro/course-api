@@ -37,7 +37,7 @@ class UserController extends Controller
     public function store(AddRequest $userRequest)
     {
         $user = User::create([
-                'photo_file' => $userRequest->photo_file ? $userRequest->photo_file->store('public') : null,
+                'photo_file' => $userRequest->photo_file ? $userRequest->photo_file->store('photos') : null,
             ] + $userRequest->all()
         );
 
